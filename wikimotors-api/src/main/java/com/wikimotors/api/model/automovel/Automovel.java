@@ -1,6 +1,5 @@
 package com.wikimotors.api.model.automovel;
 
-import java.util.Date;
 
 import com.wikimotors.api.model.fabricante.Fabricante;
 
@@ -11,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -25,8 +23,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-public class Automovel {
+public class Automovel { 
 	
+	public Automovel(AutomovelDTO data, Fabricante fabricante) {
+		this.fabricante = fabricante;
+		this.modelo = data.modelo();
+		this.anoFabricacao = data.anoFabricacao();
+		this.categoria = data.categoria();
+		this.tracao = data.tracao();
+		this.descricao = data.descricao();
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -39,14 +46,12 @@ public class Automovel {
 	private String modelo;
 	
 	@Column(name="ano_fabricacao")
-	private Date anoFabricacao;
+	private int anoFabricacao;
 	
 	private String categoria;
 	
 	private String tracao;
 	
-	@Lob
-	@Column(name="descricao", columnDefinition="text")
 	private String descricao;
 	
 	
