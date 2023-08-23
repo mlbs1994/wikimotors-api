@@ -53,6 +53,14 @@ public class Automovel {
 	private String tracao;
 	
 	private String descricao;
+
+	public void update(AutomovelUpdateDTO data) {
+		this.modelo = data.modelo();
+		this.anoFabricacao = data.anoFabricacao();
+		this.descricao = data.descricao();
+		this.categoria = data.categoria();
+		this.tracao = data.tracao();
+	}
 	
 	
 	

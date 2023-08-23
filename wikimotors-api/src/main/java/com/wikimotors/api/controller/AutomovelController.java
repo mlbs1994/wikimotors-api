@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import com.wikimotors.api.model.automovel.AutomovelDTO;
 import com.wikimotors.api.model.automovel.AutomovelDetalhesDTO;
 import com.wikimotors.api.model.automovel.AutomovelRepository;
 import com.wikimotors.api.model.automovel.AutomovelResumoDTO;
+import com.wikimotors.api.model.automovel.AutomovelUpdateDTO;
 import com.wikimotors.api.model.fabricante.Fabricante;
 import com.wikimotors.api.model.fabricante.FabricanteRepository;
 import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
@@ -76,6 +78,19 @@ public class AutomovelController {
 		AutomovelDetalhesDTO automovelDetalhes = new AutomovelDetalhesDTO(automovel);
 		
 		return ResponseEntity.ok(automovelDetalhes);
+	}
+	
+	@PutMapping
+	@Transactional
+	public ResponseEntity<AutomovelDetalhesDTO> update(@RequestBody AutomovelUpdateDTO data){
+		Automovel automovel = automovelRepository.getReferenceById(data.id());
+		
+		automovel.update(data);
+		
+		AutomovelDetalhesDTO automovelDetalhes = new AutomovelDetalhesDTO(automovel);
+		
+		return ResponseEntity.ok(automovelDetalhes);
+		
 	}
 	
 	
