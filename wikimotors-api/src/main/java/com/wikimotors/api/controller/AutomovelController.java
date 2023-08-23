@@ -3,6 +3,9 @@ package com.wikimotors.api.controller;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.wikimotors.api.model.automovel.AutomovelDTO;
+import com.wikimotors.api.model.automovel.AutomovelDetalhesDTO;
 import com.wikimotors.api.model.automovel.AutomovelRepository;
+import com.wikimotors.api.model.automovel.AutomovelResumoDTO;
 import com.wikimotors.api.model.fabricante.Fabricante;
-import com.wikimotors.api.model.fabricante.FabricanteDTO;
 import com.wikimotors.api.model.fabricante.FabricanteRepository;
+import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
 import com.wikimotors.api.model.automovel.Automovel;
 
 
@@ -33,7 +38,7 @@ public class AutomovelController {
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<AutomovelDTO> create(@RequestBody AutomovelDTO data, UriComponentsBuilder uribuilder){
+	public ResponseEntity<AutomovelResumoDTO> create(@RequestBody AutomovelDTO data, UriComponentsBuilder uribuilder){
 		
 		Fabricante fabricante = fabricanteRepository.getReferenceById(data.fabricante().id());
 		
@@ -42,13 +47,25 @@ public class AutomovelController {
 		
 		URI uri = uribuilder.path("automoveis/{id}").buildAndExpand(automovel.getId()).toUri();
 		
-		return ResponseEntity.created(uri).body(new AutomovelDTO(
-				new FabricanteDTO(fabricante),
+		return ResponseEntity.created(uri).body(new AutomovelResumoDTO(
+				new FabricanteResumoDTO(fabricante.getNome(), fabricante.getPais()),
 				automovel.getModelo(),
 				automovel.getAnoFabricacao(),
-				automovel.getCategoria(),
-				automovel.getTracao(),
-				automovel.getDescricao()));
+				automovel.getCategoria()));
+	}
+	
+	@GetMapping
+	public ResponseEntity<Page<AutomovelDTO>> list(@PageableDefault(size = 10, sort= {"modelo"}) Pageable pagination){
+		Page<AutomovelDTO> page = automovelRepository.findAll(pagination).map(AutomovelDTO::new);
+		
+		return ResponseEntity.ok(page);
+	}
+	
+	@GetMapping("/resumo")
+	public ResponseEntity<Page<AutomovelResumoDTO>> resumedList(@PageableDefault(size = 10, sort= {"modelo"}) Pageable pagination){
+		Page<AutomovelResumoDTO> page = automovelRepository.findAll(pagination).map(AutomovelResumoDTO::new);
+		
+		return ResponseEntity.ok(page);
 	}
 	
 	

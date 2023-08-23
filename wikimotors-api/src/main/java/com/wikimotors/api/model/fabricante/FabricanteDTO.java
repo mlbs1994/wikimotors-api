@@ -8,6 +8,6 @@ public record FabricanteDTO(
 		String logo_img) {
 
 	public FabricanteDTO(Fabricante fabricante) {
-		this(fabricante.getId(), fabricante.getNome(), fabricante.getPais(), "", "");
+		this(fabricante.getId(), fabricante.getNome(), fabricante.getPais(), fabricante.getDescricao(), fabricante.getLogo_img());
 	}
 }

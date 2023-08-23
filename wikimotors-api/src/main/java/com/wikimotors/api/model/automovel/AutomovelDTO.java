@@ -8,4 +8,16 @@ public record AutomovelDTO(
 		int anoFabricacao,
 		String categoria,
 		String tracao,
-		String descricao) {}
+		String descricao) {
+	
+	public AutomovelDTO(Automovel automovel) {
+		this(
+				new FabricanteDTO(automovel.getFabricante()),
+				automovel.getModelo(),
+				automovel.getAnoFabricacao(),
+				automovel.getCategoria(),
+				automovel.getTracao(),
+				automovel.getDescricao());
+	}
+	
+}
