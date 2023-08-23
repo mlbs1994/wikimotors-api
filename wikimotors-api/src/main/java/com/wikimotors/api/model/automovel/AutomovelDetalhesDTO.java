@@ -13,11 +13,11 @@ public record AutomovelDetalhesDTO(
 	public AutomovelDetalhesDTO(Automovel automovel) {
 		this(
 				new FabricanteDetalhesDTO(automovel.getFabricante()),
-				automovel.getModelo(),
-				automovel.getCategoria(),
-				automovel.getDescricao(),
+				automovel.getModelo().trim(),
+				automovel.getCategoria().trim(),
+				automovel.getDescricao().trim(),
 				automovel.getAnoFabricacao(),
-				automovel.getTracao());
+				automovel.getTracao().trim());
 	}
 	
 }
