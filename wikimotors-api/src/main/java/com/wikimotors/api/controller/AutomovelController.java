@@ -73,7 +73,7 @@ public class AutomovelController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<AutomovelDetalhesDTO> resumedList(@PathVariable Long id){
+	public ResponseEntity<AutomovelDetalhesDTO> detail(@PathVariable Long id){
 		Automovel automovel = automovelRepository.getReferenceById(id);
 		
 		AutomovelDetalhesDTO automovelDetalhes = new AutomovelDetalhesDTO(automovel);

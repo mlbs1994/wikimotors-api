@@ -38,6 +38,14 @@ public class Fabricante {
 	String descricao;
 	
 	private String logo_img;
+
+	public void update(FabricanteUpdateDTO data) {
+		this.nome = data.nome();
+		this.pais = data.pais();
+		this.descricao = data.descricao();
+		this.logo_img = data.logoImg(); 
+		
+	}
 	
 	
 }
