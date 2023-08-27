@@ -81,6 +81,13 @@ public class AutomovelController {
 		return ResponseEntity.ok(automovelDetalhes);
 	}
 	
+	@GetMapping("/fabricante/{id}")
+	public ResponseEntity<Page<AutomovelDTO>> obtainByManufacter (@PathVariable Long id, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
+		Page<AutomovelDTO> page = automovelRepository.findByFabricanteId(id, pagination).map(AutomovelDTO::new);
+		
+		return ResponseEntity.ok(page);
+	}
+	
 	@PutMapping
 	@Transactional
 	public ResponseEntity<AutomovelDetalhesDTO> update(@RequestBody AutomovelUpdateDTO data){
