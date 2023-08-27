@@ -1,6 +1,6 @@
 package com.wikimotors.api.model.fabricante;
 
-public record FabricanteDetalhesDTO(String nome, String pais, String descricao, String logoImg) {
+public record FabricanteDetalhesDTO(String nome, String pais, String descricao, String logo_img) {
 	
 	public FabricanteDetalhesDTO(Fabricante fabricante) {
 		this(

@@ -40,10 +40,10 @@ public class Fabricante {
 	private String logo_img;
 
 	public void update(FabricanteUpdateDTO data) {
-		this.nome = data.nome();
-		this.pais = data.pais();
-		this.descricao = data.descricao();
-		this.logo_img = data.logoImg(); 
+		if(data.nome() != null && !data.nome().equals("")) this.nome = data.nome();
+		if(data.pais() != null && !data.pais().equals("")) this.pais = data.pais();
+		if(data.descricao() != null && !data.descricao().equals("")) this.descricao = data.descricao();
+		if(data.logo_img() != null && !data.logo_img().equals("")) this.logo_img = data.logo_img(); 
 		
 	}
 	
