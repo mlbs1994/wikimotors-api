@@ -6,8 +6,8 @@ public record AutomovelDTO(
 		FabricanteDTO fabricante,
 		String modelo,
 		int anoFabricacao,
-		String categoria,
-		String tracao,
+		Categoria categoria,
+		Tracao tracao,
 		String descricao) {
 	
 	public AutomovelDTO(Automovel automovel) {

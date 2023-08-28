@@ -13,7 +13,7 @@ public record AutomovelResumoDTO(
 				new FabricanteResumoDTO(automovel.getFabricante()),
 				automovel.getModelo(),
 				automovel.getAnoFabricacao(),
-				automovel.getCategoria());
+				automovel.getCategoria().getDescricao());
 	}
 	
 

@@ -22,6 +22,8 @@ import com.wikimotors.api.model.automovel.AutomovelDetalhesDTO;
 import com.wikimotors.api.model.automovel.AutomovelRepository;
 import com.wikimotors.api.model.automovel.AutomovelResumoDTO;
 import com.wikimotors.api.model.automovel.AutomovelUpdateDTO;
+import com.wikimotors.api.model.automovel.Categoria;
+import com.wikimotors.api.model.automovel.Tracao;
 import com.wikimotors.api.model.fabricante.Fabricante;
 import com.wikimotors.api.model.fabricante.FabricanteRepository;
 import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
@@ -55,12 +57,12 @@ public class AutomovelController {
 				new FabricanteResumoDTO(fabricante.getNome(), fabricante.getPais()),
 				automovel.getModelo(),
 				automovel.getAnoFabricacao(),
-				automovel.getCategoria()));
+				automovel.getCategoria().getDescricao()));
 	}
 	
 	@GetMapping
-	public ResponseEntity<Page<AutomovelDTO>> list(@PageableDefault(size = 10, sort= {"modelo"}) Pageable pagination){
-		Page<AutomovelDTO> page = automovelRepository.findAll(pagination).map(AutomovelDTO::new);
+	public ResponseEntity<Page<AutomovelDetalhesDTO>> list(@PageableDefault(size = 10, sort= {"modelo"}) Pageable pagination){
+		Page<AutomovelDetalhesDTO> page = automovelRepository.findAll(pagination).map(AutomovelDetalhesDTO::new);
 		
 		return ResponseEntity.ok(page);
 	}
@@ -82,11 +84,33 @@ public class AutomovelController {
 	}
 	
 	@GetMapping("/fabricante/{id}")
-	public ResponseEntity<Page<AutomovelDTO>> obtainByManufacter (@PathVariable Long id, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
-		Page<AutomovelDTO> page = automovelRepository.findByFabricanteId(id, pagination).map(AutomovelDTO::new);
+	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByManufacter (@PathVariable Long id, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
+		Page<AutomovelDetalhesDTO> page = automovelRepository.findByFabricanteId(id, pagination).map(AutomovelDetalhesDTO::new);
 		
 		return ResponseEntity.ok(page);
 	}
+	
+	@GetMapping("/tracao/{tracao}")
+	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByTraction (@PathVariable Tracao tracao, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
+		Page<AutomovelDetalhesDTO> page = automovelRepository.findByTracao(tracao, pagination).map(AutomovelDetalhesDTO::new);
+		
+		return ResponseEntity.ok(page);
+	}
+	
+	@GetMapping("/categoria/{categoria}")
+	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByCategory (@PathVariable Categoria categoria, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
+		Page<AutomovelDetalhesDTO> page = automovelRepository.findByCategoria(categoria, pagination).map(AutomovelDetalhesDTO::new);
+		
+		return ResponseEntity.ok(page);
+	}
+	
+	@GetMapping("/modelo/{modelo}")
+	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByModelo (@PathVariable String modelo, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
+		Page<AutomovelDetalhesDTO> page = automovelRepository.findByModeloContaining(modelo, pagination).map(AutomovelDetalhesDTO::new);
+		
+		return ResponseEntity.ok(page);
+	}
+	
 	
 	@PutMapping
 	@Transactional

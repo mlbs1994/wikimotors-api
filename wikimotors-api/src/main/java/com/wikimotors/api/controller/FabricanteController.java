@@ -67,6 +67,20 @@ public class FabricanteController {
 		return ResponseEntity.ok(fabricanteDetalhes);
 	}
 	
+	@GetMapping("/pais/{pais}")
+	public ResponseEntity<Page<FabricanteDetalhesDTO>> obtainByPais (@PathVariable String pais, @PageableDefault(size=10, sort = {"nome"}) Pageable pagination){
+		Page<FabricanteDetalhesDTO> page = fabricanteRepository.findByPais(pais, pagination).map(FabricanteDetalhesDTO::new); 
+		
+		return ResponseEntity.ok(page);
+	}
+	
+	@GetMapping("/nome/{nome}")
+	public ResponseEntity<Page<FabricanteDetalhesDTO>> obtainByNome (@PathVariable String nome, @PageableDefault(size=10, sort = {"nome"}) Pageable pagination){
+		Page<FabricanteDetalhesDTO> page = fabricanteRepository.findByNomeContaining(nome, pagination).map(FabricanteDetalhesDTO::new);
+		
+		return ResponseEntity.ok(page);
+	}
+	
 	@PutMapping
 	@Transactional
 	public ResponseEntity<FabricanteDetalhesDTO> update(@RequestBody FabricanteUpdateDTO data){
