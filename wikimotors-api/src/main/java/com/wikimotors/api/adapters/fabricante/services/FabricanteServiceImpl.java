@@ -6,11 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.wikimotors.api.adapters.fabricante.repositories.FabricanteRepository;
-import com.wikimotors.api.model.fabricante.Fabricante;
-import com.wikimotors.api.model.fabricante.FabricanteDTO;
-import com.wikimotors.api.model.fabricante.FabricanteDetalhesDTO;
-import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
-import com.wikimotors.api.model.fabricante.FabricanteUpdateDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteDetalhesDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteResumoDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteUpdateDTO;
+import com.wikimotors.api.model.fabricante.entities.Fabricante;
 import com.wikimotors.api.ports.fabricante.FabricanteService;
 
 @Service

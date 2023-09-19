@@ -1,1 +1,0 @@
-ALTER TABLE fabricante ADD COLUMN logo_img text;

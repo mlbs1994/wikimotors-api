@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.wikimotors.api.model.automovel.AutomovelDefaultDTO;
-import com.wikimotors.api.model.automovel.AutomovelDetalhesDTO;
-import com.wikimotors.api.model.automovel.AutomovelResumoDTO;
-import com.wikimotors.api.model.automovel.AutomovelUpdateDTO;
-import com.wikimotors.api.model.automovel.Categoria;
-import com.wikimotors.api.model.automovel.Tracao;
+import com.wikimotors.api.model.automovel.dtos.AutomovelDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelDefaultDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelDetalhesDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelResumoDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelUpdateDTO;
+import com.wikimotors.api.model.automovel.entities.Categoria;
+import com.wikimotors.api.model.automovel.entities.Tracao;
 import com.wikimotors.api.ports.automovel.AutomovelService;
 import com.wikimotors.api.ports.automovel.AutomovelServicePort;
-import com.wikimotors.api.model.automovel.AutomovelDTO;
 
 import jakarta.transaction.Transactional;
 

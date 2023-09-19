@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 
 import com.wikimotors.api.adapters.automovel.repositories.AutomovelRepository;
 import com.wikimotors.api.adapters.fabricante.repositories.FabricanteRepository;
-import com.wikimotors.api.model.automovel.Automovel;
-import com.wikimotors.api.model.automovel.AutomovelDTO;
-import com.wikimotors.api.model.automovel.AutomovelDefaultDTO;
-import com.wikimotors.api.model.automovel.AutomovelDetalhesDTO;
-import com.wikimotors.api.model.automovel.AutomovelResumoDTO;
-import com.wikimotors.api.model.automovel.AutomovelUpdateDTO;
-import com.wikimotors.api.model.automovel.Categoria;
-import com.wikimotors.api.model.automovel.Tracao;
-import com.wikimotors.api.model.fabricante.Fabricante;
+import com.wikimotors.api.model.automovel.dtos.AutomovelDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelDefaultDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelDetalhesDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelResumoDTO;
+import com.wikimotors.api.model.automovel.dtos.AutomovelUpdateDTO;
+import com.wikimotors.api.model.automovel.entities.Automovel;
+import com.wikimotors.api.model.automovel.entities.Categoria;
+import com.wikimotors.api.model.automovel.entities.Tracao;
+import com.wikimotors.api.model.fabricante.entities.Fabricante;
 import com.wikimotors.api.ports.automovel.AutomovelService;
 
 

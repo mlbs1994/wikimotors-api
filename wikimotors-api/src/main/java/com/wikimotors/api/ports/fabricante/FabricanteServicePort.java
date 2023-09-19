@@ -5,10 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.wikimotors.api.model.fabricante.FabricanteDTO;
-import com.wikimotors.api.model.fabricante.FabricanteDetalhesDTO;
-import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
-import com.wikimotors.api.model.fabricante.FabricanteUpdateDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteDetalhesDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteResumoDTO;
+import com.wikimotors.api.model.fabricante.dtos.FabricanteUpdateDTO;
 
 public interface FabricanteServicePort {
 
