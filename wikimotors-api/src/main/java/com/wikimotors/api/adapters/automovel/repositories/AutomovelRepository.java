@@ -1,8 +1,12 @@
-package com.wikimotors.api.model.automovel;
+package com.wikimotors.api.adapters.automovel.repositories;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.wikimotors.api.model.automovel.Automovel;
+import com.wikimotors.api.model.automovel.Categoria;
+import com.wikimotors.api.model.automovel.Tracao;
 
 public interface AutomovelRepository extends JpaRepository<Automovel, Long>{
 

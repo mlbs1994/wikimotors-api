@@ -2,8 +2,7 @@ package com.wikimotors.api.model.automovel;
 
 import com.wikimotors.api.model.fabricante.FabricanteDTO;
 
-public record AutomovelDTO(
-		Long id,
+public record AutomovelDefaultDTO (
 		FabricanteDTO fabricante,
 		String modelo,
 		int anoFabricacao,
@@ -11,9 +10,8 @@ public record AutomovelDTO(
 		Tracao tracao,
 		String descricao) {
 	
-	public AutomovelDTO(Automovel automovel) {
+	public AutomovelDefaultDTO(Automovel automovel) {
 		this(
-				automovel.getId(),
 				new FabricanteDTO(automovel.getFabricante()),
 				automovel.getModelo(),
 				automovel.getAnoFabricacao(),

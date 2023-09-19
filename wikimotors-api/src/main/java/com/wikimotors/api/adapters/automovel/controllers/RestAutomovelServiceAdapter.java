@@ -1,4 +1,4 @@
-package com.wikimotors.api.controller;
+package com.wikimotors.api.adapters.automovel.controllers;
 
 import java.net.URI;
 
@@ -17,97 +17,77 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.wikimotors.api.model.automovel.AutomovelDTO;
+import com.wikimotors.api.model.automovel.AutomovelDefaultDTO;
 import com.wikimotors.api.model.automovel.AutomovelDetalhesDTO;
-import com.wikimotors.api.model.automovel.AutomovelRepository;
 import com.wikimotors.api.model.automovel.AutomovelResumoDTO;
 import com.wikimotors.api.model.automovel.AutomovelUpdateDTO;
 import com.wikimotors.api.model.automovel.Categoria;
 import com.wikimotors.api.model.automovel.Tracao;
-import com.wikimotors.api.model.fabricante.Fabricante;
-import com.wikimotors.api.model.fabricante.FabricanteRepository;
-import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
-import com.wikimotors.api.model.automovel.Automovel;
-
+import com.wikimotors.api.ports.automovel.AutomovelService;
+import com.wikimotors.api.ports.automovel.AutomovelServicePort;
+import com.wikimotors.api.model.automovel.AutomovelDTO;
 
 import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("automoveis")
-public class AutomovelController {
+public class RestAutomovelServiceAdapter implements AutomovelServicePort {
+	
+	private final AutomovelService automovelService;
 	
 	@Autowired
-	AutomovelRepository automovelRepository;
-	
-	@Autowired
-	FabricanteRepository fabricanteRepository;
+	public RestAutomovelServiceAdapter(AutomovelService automovelService) {
+		this.automovelService = automovelService;
+	}
 	
 	@PostMapping
 	@Transactional
-	public ResponseEntity<AutomovelResumoDTO> create(@RequestBody AutomovelDTO data, UriComponentsBuilder uribuilder){
-		
-		Fabricante fabricante = fabricanteRepository.getReferenceById(data.fabricante().id());
-		
-		Automovel automovel = new Automovel(data, fabricante);
-		automovelRepository.save(automovel);
-		
-		URI uri = uribuilder.path("automoveis/{id}").buildAndExpand(automovel.getId()).toUri();
-		
-		return ResponseEntity.created(uri).body(new AutomovelResumoDTO(
-				new FabricanteResumoDTO(fabricante.getNome(), fabricante.getPais()),
-				automovel.getModelo(),
-				automovel.getAnoFabricacao(),
-				automovel.getCategoria().getDescricao()));
+	@Override
+	public ResponseEntity<AutomovelDTO> create(@RequestBody AutomovelDefaultDTO data, UriComponentsBuilder uribuilder){
+		AutomovelDTO automovelDTO = automovelService.criarAutomovel(data);
+		URI uri = uribuilder.path("automoveis/{id}").buildAndExpand(automovelDTO.id()).toUri();
+		return ResponseEntity.created(uri).body(automovelDTO);
 	}
 	
 	@GetMapping
 	public ResponseEntity<Page<AutomovelDetalhesDTO>> list(@PageableDefault(size = 10, sort= {"modelo"}) Pageable pagination){
-		Page<AutomovelDetalhesDTO> page = automovelRepository.findAll(pagination).map(AutomovelDetalhesDTO::new);
-		
+		Page<AutomovelDetalhesDTO> page = automovelService.listarAutomoveis(pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/resumo")
 	public ResponseEntity<Page<AutomovelResumoDTO>> resumedList(@PageableDefault(size = 10, sort= {"modelo"}) Pageable pagination){
-		Page<AutomovelResumoDTO> page = automovelRepository.findAll(pagination).map(AutomovelResumoDTO::new);
-		
+		Page<AutomovelResumoDTO> page = automovelService.listarAutomoveisResumido(pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<AutomovelDetalhesDTO> detail(@PathVariable Long id){
-		Automovel automovel = automovelRepository.getReferenceById(id);
-		
-		AutomovelDetalhesDTO automovelDetalhes = new AutomovelDetalhesDTO(automovel);
-		
+		AutomovelDetalhesDTO automovelDetalhes = automovelService.detalharAutomovel(id);
 		return ResponseEntity.ok(automovelDetalhes);
 	}
 	
-	@GetMapping("/fabricante/{id}")
-	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByManufacter (@PathVariable Long id, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
-		Page<AutomovelDetalhesDTO> page = automovelRepository.findByFabricanteId(id, pagination).map(AutomovelDetalhesDTO::new);
-		
+	@GetMapping("/fabricante/{idFabricante}")
+	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByManufacter (@PathVariable Long idFabricante, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
+		Page<AutomovelDetalhesDTO> page = automovelService.obterAutomoveisPorFabricante(idFabricante, pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/tracao/{tracao}")
 	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByTraction (@PathVariable Tracao tracao, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
-		Page<AutomovelDetalhesDTO> page = automovelRepository.findByTracao(tracao, pagination).map(AutomovelDetalhesDTO::new);
-		
+		Page<AutomovelDetalhesDTO> page = automovelService.obterAutomoveisPorTracao(tracao, pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/categoria/{categoria}")
 	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByCategory (@PathVariable Categoria categoria, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
-		Page<AutomovelDetalhesDTO> page = automovelRepository.findByCategoria(categoria, pagination).map(AutomovelDetalhesDTO::new);
-		
+		Page<AutomovelDetalhesDTO> page = automovelService.obterAutomoveisPorCategoria(categoria, pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/modelo/{modelo}")
 	public ResponseEntity<Page<AutomovelDetalhesDTO>> obtainByModelo (@PathVariable String modelo, @PageableDefault(size=10, sort = {"modelo"}) Pageable pagination){
-		Page<AutomovelDetalhesDTO> page = automovelRepository.findByModeloContaining(modelo, pagination).map(AutomovelDetalhesDTO::new);
-		
+		Page<AutomovelDetalhesDTO> page = automovelService.obterAutomoveisPorModelo(modelo, pagination);
 		return ResponseEntity.ok(page);
 	}
 	
@@ -115,22 +95,18 @@ public class AutomovelController {
 	@PutMapping
 	@Transactional
 	public ResponseEntity<AutomovelDetalhesDTO> update(@RequestBody AutomovelUpdateDTO data){
-		Automovel automovel = automovelRepository.getReferenceById(data.id());
-		
-		automovel.update(data);
-		
-		AutomovelDetalhesDTO automovelDetalhes = new AutomovelDetalhesDTO(automovel);
-		
+		AutomovelDetalhesDTO automovelDetalhes = automovelService.atualizarAutomovel(data);
 		return ResponseEntity.ok(automovelDetalhes);
-		
 	}
 	
 	@DeleteMapping("{id}")
 	@Transactional
 	public ResponseEntity<Void> delete(@PathVariable Long id){
-		automovelRepository.deleteById(id);
+		automovelService.deletarAutomovel(id);
 		return ResponseEntity.noContent().build();
 	}
 	
+	
+
 	
 }

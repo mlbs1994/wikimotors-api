@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(of = "id")
 public class Automovel { 
 	
-	public Automovel(AutomovelDTO data, Fabricante fabricante) {
+	public Automovel(AutomovelDefaultDTO data, Fabricante fabricante) {
 		this.fabricante = fabricante;
 		this.modelo = data.modelo();
 		this.anoFabricacao = data.anoFabricacao();

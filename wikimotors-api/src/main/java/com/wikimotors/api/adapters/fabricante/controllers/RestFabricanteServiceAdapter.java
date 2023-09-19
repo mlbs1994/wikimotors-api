@@ -1,4 +1,4 @@
-package com.wikimotors.api.controller;
+package com.wikimotors.api.adapters.fabricante.controllers;
 
 import java.net.URI;
 
@@ -17,66 +17,61 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.wikimotors.api.model.fabricante.Fabricante;
 import com.wikimotors.api.model.fabricante.FabricanteDTO;
 import com.wikimotors.api.model.fabricante.FabricanteDetalhesDTO;
-import com.wikimotors.api.model.fabricante.FabricanteRepository;
 import com.wikimotors.api.model.fabricante.FabricanteResumoDTO;
 import com.wikimotors.api.model.fabricante.FabricanteUpdateDTO;
+import com.wikimotors.api.ports.fabricante.FabricanteService;
+import com.wikimotors.api.ports.fabricante.FabricanteServicePort;
 
 import jakarta.transaction.Transactional;
 
 @RestController
 @RequestMapping("fabricantes")
-public class FabricanteController {
+public class RestFabricanteServiceAdapter implements FabricanteServicePort {
+	
+	private final FabricanteService fabricanteService;
 	
 	@Autowired
-	FabricanteRepository fabricanteRepository;
-	
+	public RestFabricanteServiceAdapter(FabricanteService fabricanteService) {
+		this.fabricanteService = fabricanteService;
+	}
+
 	@PostMapping
 	@Transactional
 	public ResponseEntity<FabricanteDTO> create(@RequestBody FabricanteDTO data, UriComponentsBuilder uribuilder){
-		Fabricante fabricante = new Fabricante(data);
-		fabricanteRepository.save(fabricante);
-		
-		URI uri = uribuilder.path("fabricantes/{id}").buildAndExpand(fabricante.getId()).toUri();
-		
+		FabricanteDTO fabricanteDTO = fabricanteService.criarFabricante(data);
+		URI uri = uribuilder.path("fabricantes/{id}").buildAndExpand(fabricanteDTO.id()).toUri();
 		return ResponseEntity.created(uri).body(data);
 	}
 	
 	@GetMapping
 	public ResponseEntity<Page<FabricanteDTO>> list(@PageableDefault(size = 10, sort= {"nome"}) Pageable pagination){
-		Page<FabricanteDTO> page = fabricanteRepository.findAll(pagination).map(FabricanteDTO::new);
-		
+		Page<FabricanteDTO> page = fabricanteService.listarFabricantes(pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/resumo")
 	public ResponseEntity<Page<FabricanteResumoDTO>> resumedList(@PageableDefault(size = 10, sort= {"nome"}) Pageable pagination){
-		Page<FabricanteResumoDTO> page = fabricanteRepository.findAll(pagination).map(FabricanteResumoDTO::new);
-		
+		Page<FabricanteResumoDTO> page = fabricanteService.listarFabricantesResumido(pagination);
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<FabricanteDetalhesDTO> detail(@PathVariable Long id){
-		Fabricante fabricante = fabricanteRepository.getReferenceById(id);
-		
-		FabricanteDetalhesDTO fabricanteDetalhes = new FabricanteDetalhesDTO(fabricante);
-		
+		FabricanteDetalhesDTO fabricanteDetalhes = fabricanteService.detalharFabricante(id);
 		return ResponseEntity.ok(fabricanteDetalhes);
 	}
 	
 	@GetMapping("/pais/{pais}")
 	public ResponseEntity<Page<FabricanteDetalhesDTO>> obtainByPais (@PathVariable String pais, @PageableDefault(size=10, sort = {"nome"}) Pageable pagination){
-		Page<FabricanteDetalhesDTO> page = fabricanteRepository.findByPais(pais, pagination).map(FabricanteDetalhesDTO::new); 
-		
+		Page<FabricanteDetalhesDTO> page = fabricanteService.listarFabricantesPorPais(pais, pagination) ;
 		return ResponseEntity.ok(page);
 	}
 	
 	@GetMapping("/nome/{nome}")
 	public ResponseEntity<Page<FabricanteDetalhesDTO>> obtainByNome (@PathVariable String nome, @PageableDefault(size=10, sort = {"nome"}) Pageable pagination){
-		Page<FabricanteDetalhesDTO> page = fabricanteRepository.findByNomeContaining(nome, pagination).map(FabricanteDetalhesDTO::new);
+		Page<FabricanteDetalhesDTO> page = fabricanteService.listarFabricantesPorNome(nome, pagination);
 		
 		return ResponseEntity.ok(page);
 	}
@@ -84,20 +79,14 @@ public class FabricanteController {
 	@PutMapping
 	@Transactional
 	public ResponseEntity<FabricanteDetalhesDTO> update(@RequestBody FabricanteUpdateDTO data){
-		Fabricante fabricante = fabricanteRepository.getReferenceById(data.id());
-		
-		fabricante.update(data);
-		
-		FabricanteDetalhesDTO fabricanteDetalhes = new FabricanteDetalhesDTO(fabricante);
-		
+		FabricanteDetalhesDTO fabricanteDetalhes = fabricanteService.atualizarFabricante(data);
 		return ResponseEntity.ok(fabricanteDetalhes);
-		
 	}
 	
 	@DeleteMapping("{id}")
 	@Transactional
 	public ResponseEntity<Void> delete(@PathVariable Long id){
-		fabricanteRepository.deleteById(id);
+		fabricanteService.deletarFabricante(id);
 		return ResponseEntity.noContent().build();
 	}
 
