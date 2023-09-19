@@ -1,0 +1,102 @@
+# Arquivos e pastas específicos para o Eclipse
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders/
+
+# Arquivos do JDT (Java Development Tools)
+*.class
+
+# Arquivos de configuração do Eclipse
+.project
+.classpath
+
+# Arquivos específicos para IntelliJ IDEA
+.idea/
+
+# Arquivos específicos para Visual Studio Code
+.vscode/
+
+# Logs e saída de build
+*.log
+*.pot
+*.patch
+*.swp
+*.bak
+*.orig
+
+# Cache de build
+*.cache
+
+# Arquivos e pastas para trabalhar com ferramentas de build como Maven ou Gradle
+target/
+build/
+out/
+
+# Arquivos de dependências Maven
+.mvn/
+
+# Arquivos de configuração do Gradle
+.gradle/
+build/
+
+# Arquivos específicos para o Windows
+Thumbs.db
+ehthumbs.db
+
+# Arquivos de pasta de reciclagem específicos para o Windows
+$RECYCLE.BIN/
+
+# Arquivos de cache específicos para o Windows
+ehthumbs_vista.db
+
+# Arquivos de pasta de reciclagem específicos para o Windows Vista
+*.~*
+
+# Arquivos de pasta de reciclagem específicos para o Windows SBS 2008
+Desktop.ini
+
+# Arquivos de log específicos para o Windows
+*.log
+
+# Arquivos de log específicos para o Windows Azure
+*.azure
+
+# Arquivos de log específicos para o Windows
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+.history/
+
+# Sublime Text directories
+.sublime-project
+.sublime-workspace
+
+# Database files
+*.sqlite
+*.sqlite3
+*.db
+
+pom.properties
+
